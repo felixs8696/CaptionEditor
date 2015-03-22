@@ -7,16 +7,16 @@ import java.util.Map;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import javax.swing.JOptionPane; 
 
 //TODO
 //SOLVE CASE WITH OVERLAPPING SUBTITLE INDICES
-//CHECK WHAT HAPPENS WITH SHIFTNUM IF NUMBER IS OUT OF RANGE
-//IMPLEMENT SHIFTNUM FOR SINGLE NUMBER
+// DONE CHECK WHAT HAPPENS WITH SHIFTNUM IF NUMBER IS OUT OF RANGE
 //GUARD AGAINST STUPID INPUTS
-//FINISH SHIFT TIME WITH TIME PARAMETERS
-//SHIFT TIME OVERLOAD WITH SUBTITLE INDEX PARAMETERS
-//IMPLEMENT CONVERTINT?
-//ADD ABILITY TO AUTOMATICALLY GENERAT SUBTITLE INDICES
+// DONE FINISH SHIFT TIME WITH TIME PARAMETERS
+// DONE SHIFT TIME OVERLOAD WITH SUBTITLE INDEX PARAMETERS
+// DONE IMPLEMENT CONVERTINT
+// DONE ADD ABILITY TO AUTOMATICALLY GENERAT SUBTITLE INDICES
 public class CaptionEditor {
 	private In captionFile;
 	private String fileString;
@@ -256,95 +256,62 @@ public class CaptionEditor {
 	}
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
-		System.out.println("Welcome to the Caption Editor!");
-		System.out.println("Please enter the .srt file that you wish to edit (include .srt extension): ");
-		System.out.print("File Name: ");
-		String file = in.next();
+		JOptionPane.showMessageDialog(null, "Welcome to the Caption Editor!");
+		String file = JOptionPane.showInputDialog("Please enter the .srt file that you wish to edit (include .srt extension): ");;
 		CaptionEditor cE = new CaptionEditor(file);
 		while (true) {
-			System.out.println("Enter an edit command ('help' for list of commands): ");
-		System.out.print("> ");
-		String command = in.next();
+		String command = JOptionPane.showInputDialog("Enter an edit command ('help' for command descriptions): ");
 		switch (command) {
 			case "help":
 				In help = new In("help.txt");
                 String helpStr = help.readAll();
-                System.out.println(helpStr);
+                JOptionPane.showMessageDialog(null, helpStr);
                 break;
             case "quit":
             	return;
             case "shiftNum":
             	//SOLVE CASE WITH OVERLAPPING NUMBERS
-            	System.out.println("Enter the starting index from which you want to shift: ");
-            	System.out.print("> ");
-            	int startIndex = Integer.valueOf(in.next());
-            	System.out.println("Enter the ending index at which you want the shift to end: ");
-            	System.out.print("> ");
-            	int endIndex = Integer.valueOf(in.next());
-            	System.out.println("Enter the amount you want to shift the indices by: ");
-            	System.out.print("> ");
-            	int changeIndex = Integer.valueOf(in.next());
-            	System.out.println("Indices from " + startIndex + " to " + endIndex + " have been shifted by " + changeIndex);
+            	int startIndex = Integer.valueOf(JOptionPane.showInputDialog("Enter the starting index from which you want to shift: "));
+            	int endIndex = Integer.valueOf(JOptionPane.showInputDialog("Enter the ending index at which you want the shift to end: "));
+            	int changeIndex = Integer.valueOf(JOptionPane.showInputDialog("Enter the amount you want to shift the indices by: "));
+            	JOptionPane.showMessageDialog(null, "Indices from " + startIndex + " to " + endIndex + " have been shifted by " + changeIndex);
             	cE.shiftNum(startIndex, endIndex, changeIndex);
             	break;
             case "shiftTime":
-            	System.out.println("Enter the starting time from which you want to shift the time in this format (##:##:##,##): ");
-            	System.out.print("> ");
-            	String startTime = in.next();
-            	System.out.println("Enter the ending time at which you want the shift to end in this format (##:##:##,##): ");
-            	System.out.print("> ");
-            	String endTime = in.next();
+            	String startTime = JOptionPane.showInputDialog("Enter the starting time from which you want to shift the time in this format (##:##:##,##): ");
+            	String endTime = JOptionPane.showInputDialog("Enter the ending time at which you want the shift to end in this format (##:##:##,##): ");
             	int[] changeTime = new int[4];
-            	System.out.println("Enter the amount of hours you want to shift the time by: ");
-            	System.out.print("> ");
-            	changeTime[0] = Integer.valueOf(in.next());
-            	System.out.println("Enter the amount of minutes you want to shift the time by: ");
-            	System.out.print("> ");
-            	changeTime[1] = Integer.valueOf(in.next());
-            	System.out.println("Enter the amount of seconds you want to shift the time by: ");
-            	System.out.print("> ");
-            	changeTime[2] = Integer.valueOf(in.next());
-            	System.out.println("Enter the amount of milliseconds you want to shift the time by: ");
-            	System.out.print("> ");
-            	changeTime[3] = Integer.valueOf(in.next());
+            	changeTime[0] = Integer.valueOf(JOptionPane.showInputDialog("Enter the amount of hours you want to shift the time by: "));
+            	changeTime[1] = Integer.valueOf(JOptionPane.showInputDialog("Enter the amount of minutes you want to shift the time by: "));
+            	changeTime[2] = Integer.valueOf(JOptionPane.showInputDialog("Enter the amount of seconds you want to shift the time by: "));
+            	changeTime[3] = Integer.valueOf(JOptionPane.showInputDialog("Enter the amount of milliseconds you want to shift the time by: "));
             	cE.shiftTime(startTime, endTime, changeTime);
-            	System.out.println("Subtitles from " + startTime + " to " + endTime + " have been shifted by " + cE.convertString(changeTime));
+            	JOptionPane.showMessageDialog(null, "Subtitles from " + startTime + " to " + endTime + " have been shifted by " + cE.convertString(changeTime));
             	break;
             case "shiftTimeByIndex":
-            	System.out.println("Enter the starting index from which you want to shift the time: ");
-            	System.out.print("> ");
-            	int startI = Integer.valueOf(in.next());
-            	System.out.println("Enter the ending index at which you want the shift to end: ");
-            	System.out.print("> ");
-            	int endI = Integer.valueOf(in.next());
+            	
+            	int startI = Integer.valueOf(JOptionPane.showInputDialog("Enter the starting index from which you want to shift the time: "));
+            	int endI = Integer.valueOf(JOptionPane.showInputDialog("Enter the ending index at which you want the shift to end: "));
             	//POSSIBLE BREAK HERE TIMESECTIONS SHOULD BE FLEXIBLE (ASSUMPTION: RIGID TIME STRUCTURE)
             	int[] changeAmount = new int[4];
-            	System.out.println("Enter the amount of hours you want to shift the time by: ");
-            	System.out.print("> ");
-            	changeAmount[0] = Integer.valueOf(in.next());
-            	System.out.println("Enter the amount of minutes you want to shift the time by: ");
-            	System.out.print("> ");
-            	changeAmount[1] = Integer.valueOf(in.next());
-            	System.out.println("Enter the amount of seconds you want to shift the time by: ");
-            	System.out.print("> ");
-            	changeAmount[2] = Integer.valueOf(in.next());
-            	System.out.println("Enter the amount of milliseconds you want to shift the time by: ");
-            	System.out.print("> ");
-            	changeAmount[3] = Integer.valueOf(in.next());
+            	changeAmount[0] = Integer.valueOf(JOptionPane.showInputDialog("Enter the amount of hours you want to shift the time by: "));
+            	changeAmount[1] = Integer.valueOf(JOptionPane.showInputDialog("Enter the amount of minutes you want to shift the time by: "));
+            	changeAmount[2] = Integer.valueOf(JOptionPane.showInputDialog("Enter the amount of seconds you want to shift the time by: "));
+            	changeAmount[3] = Integer.valueOf(JOptionPane.showInputDialog("Enter the amount of milliseconds you want to shift the time by: "));
             	cE.shiftTimeByIndex(startI, endI, changeAmount);
-            	System.out.println("Subtitles from indices " + startI + " to " + endI + " have been shifted by " + cE.convertString(changeAmount));
+            	JOptionPane.showMessageDialog(null, "Subtitles from indices " + startI + " to " + endI + " have been shifted by " + cE.convertString(changeAmount));
             	break;
             case "generateIndices":
             	if (cE.indiciesCheck()) {
             		cE.generateSubIndices();
-            		System.out.println("An index number for each subtitle has been added.");
+            		JOptionPane.showMessageDialog(null, "An index number for each subtitle has been added.");
             	}
             	else {
-            		System.out.println("Error: The .srt files already contains indices");
+            		JOptionPane.showMessageDialog(null, "Error: The .srt files already contains indices");
             	}
             	break;
             default:
-            	System.out.println("Invalid command.");  
+            	JOptionPane.showMessageDialog(null, "Invalid command.");  
                 break;
 			}
 		}
