@@ -1,5 +1,6 @@
 # CaptionEditor
-######A program to make editing sections of .srt files more easily
+###### A program to make editing sections of .srt files more easily
+###### Compile CaptionEditor.java
 * [Shift Index] - shifts specified ranges of subtitles indices by an amount inputted by the user
 * [Shift Time] - shifts a specified range of subtitles times by an time amount inputted by the user
 * [Shift Time By Index] - shifts times of subtitles by an inputted amount within a specified range of indicies
