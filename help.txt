@@ -1,5 +1,5 @@
-help: provides a list of edit commands for the subtitle file
-quit: quits the program
-shiftNum: shifts specified ranges of subtitles indices by an amount inputted by the user
-shiftTime: shifts a specified range of subtitles times by an time amount inputted by the user
-shiftTimeByIndex: shifts times of subtitles by an amount inputted by the user within a specified range of indicies
+[shiftIndex] - shifts specified ranges of subtitles indices by an amount inputted by the user
+[shiftTime] - shifts a specified range of subtitles times by an time amount inputted by the user
+[shiftTimeByIndex] - shifts times of subtitles by an inputted amount within a specified range of indicies
+[IndexGen] - Generates indices for all of your subtitles (if they don't already exist)
+[quit] - quits the program

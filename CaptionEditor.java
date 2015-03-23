@@ -7,7 +7,14 @@ import java.util.Map;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.BufferedReader;
-import javax.swing.JOptionPane; 
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.JDialog;
+import java.awt.Dimension;
+import java.applet.Applet;
+import java.awt.Graphics;
+import javax.swing.ImageIcon;
 
 //TODO
 //SOLVE CASE WITH OVERLAPPING SUBTITLE INDICES
@@ -17,11 +24,12 @@ import javax.swing.JOptionPane;
 // DONE SHIFT TIME OVERLOAD WITH SUBTITLE INDEX PARAMETERS
 // DONE IMPLEMENT CONVERTINT
 // DONE ADD ABILITY TO AUTOMATICALLY GENERAT SUBTITLE INDICES
-public class CaptionEditor {
+public class CaptionEditor extends Applet{
 	private In captionFile;
 	private String fileString;
 	private TreeMap<Integer, TimeNode> timeMap;
 	private int currNum = 1;
+	private JDialog dialog1;
 
 	public CaptionEditor(String filename) {
 		fileString = filename;
@@ -254,30 +262,63 @@ public class CaptionEditor {
 		}
 		return true;
 	}
+
+	public void showFileContents() {
+		try {
+			BufferedReader file = new BufferedReader(new FileReader(fileString));
+			String line;
+			String allFile = "";
+			while((line = file.readLine()) != null) {
+				allFile += line + "\n";
+			}
+			JTextArea textArea = new JTextArea(allFile);
+			JScrollPane scrollPane = new JScrollPane(textArea);  
+			textArea.setLineWrap(true);  
+			textArea.setWrapStyleWord(true); 
+			scrollPane.setPreferredSize( new Dimension( 300, 600 ) );
+			// JOptionPane.showMessageDialog(null, scrollPane, "dialog test with textarea",
+			// 	JOptionPane.YES_NO_OPTION);
+			JOptionPane jPane = new JOptionPane(scrollPane);
+			dialog1 = jPane.createDialog(null, fileString);
+		    dialog1.setModal(false);
+		    dialog1.setVisible(true);
+		    dialog1.setLocation(0,0);
+		    System.out.println(dialog1.isFocusableWindow());
+		    dialog1.toFront();
+		}
+		catch (Exception e) {
+			System.out.println("Problem reading file.");
+		}
+		
+	}
+
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
+		ImageIcon icon = new ImageIcon("fslogo1.png");
+		String title = "The Caption Editor";
 		JOptionPane.showMessageDialog(null, "Welcome to the Caption Editor!");
-		String file = JOptionPane.showInputDialog("Please enter the .srt file that you wish to edit (include .srt extension): ");;
+		String file = (String) JOptionPane.showInputDialog(null, "Please enter the .srt file that you wish to edit (include .srt extension): ", title,
+			JOptionPane.OK_CANCEL_OPTION, icon, null, null);
 		CaptionEditor cE = new CaptionEditor(file);
+		cE.showFileContents();
+		In help = new In("help.txt");
+        String helpStr = help.readAll();
 		while (true) {
-		String command = JOptionPane.showInputDialog("Enter an edit command ('help' for command descriptions): ");
+		Object[] options = {"Shift Index","Shift Time","Shift Time By Index", "Index Generator", "Show File", "Quit"};
+		int command = JOptionPane.showOptionDialog(null,"Enter an edit command: " + "\n" + helpStr, "The Caption Editor",
+		    JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE, icon, options, options[5]);
 		switch (command) {
-			case "help":
-				In help = new In("help.txt");
-                String helpStr = help.readAll();
-                JOptionPane.showMessageDialog(null, helpStr);
-                break;
-            case "quit":
+            case 5:
             	return;
-            case "shiftNum":
+            case 0:
             	//SOLVE CASE WITH OVERLAPPING NUMBERS
             	int startIndex = Integer.valueOf(JOptionPane.showInputDialog("Enter the starting index from which you want to shift: "));
             	int endIndex = Integer.valueOf(JOptionPane.showInputDialog("Enter the ending index at which you want the shift to end: "));
             	int changeIndex = Integer.valueOf(JOptionPane.showInputDialog("Enter the amount you want to shift the indices by: "));
-            	JOptionPane.showMessageDialog(null, "Indices from " + startIndex + " to " + endIndex + " have been shifted by " + changeIndex);
             	cE.shiftNum(startIndex, endIndex, changeIndex);
+            	JOptionPane.showMessageDialog(null, "Indices from " + startIndex + " to " + endIndex + " have been shifted by " + changeIndex);
             	break;
-            case "shiftTime":
+            case 1:
             	String startTime = JOptionPane.showInputDialog("Enter the starting time from which you want to shift the time in this format (##:##:##,##): ");
             	String endTime = JOptionPane.showInputDialog("Enter the ending time at which you want the shift to end in this format (##:##:##,##): ");
             	int[] changeTime = new int[4];
@@ -288,8 +329,7 @@ public class CaptionEditor {
             	cE.shiftTime(startTime, endTime, changeTime);
             	JOptionPane.showMessageDialog(null, "Subtitles from " + startTime + " to " + endTime + " have been shifted by " + cE.convertString(changeTime));
             	break;
-            case "shiftTimeByIndex":
-            	
+            case 2:
             	int startI = Integer.valueOf(JOptionPane.showInputDialog("Enter the starting index from which you want to shift the time: "));
             	int endI = Integer.valueOf(JOptionPane.showInputDialog("Enter the ending index at which you want the shift to end: "));
             	//POSSIBLE BREAK HERE TIMESECTIONS SHOULD BE FLEXIBLE (ASSUMPTION: RIGID TIME STRUCTURE)
@@ -301,7 +341,7 @@ public class CaptionEditor {
             	cE.shiftTimeByIndex(startI, endI, changeAmount);
             	JOptionPane.showMessageDialog(null, "Subtitles from indices " + startI + " to " + endI + " have been shifted by " + cE.convertString(changeAmount));
             	break;
-            case "generateIndices":
+            case 3:
             	if (cE.indiciesCheck()) {
             		cE.generateSubIndices();
             		JOptionPane.showMessageDialog(null, "An index number for each subtitle has been added.");
@@ -310,6 +350,8 @@ public class CaptionEditor {
             		JOptionPane.showMessageDialog(null, "Error: The .srt files already contains indices");
             	}
             	break;
+            case 4:
+            	cE.showFileContents();
             default:
             	JOptionPane.showMessageDialog(null, "Invalid command.");  
                 break;
