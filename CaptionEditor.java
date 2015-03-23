@@ -285,7 +285,7 @@ public class CaptionEditor extends Applet{
 		    dialog1.setModal(false);
 		    dialog1.setVisible(true);
 		    dialog1.setLocation(0,0);
-		    System.out.println(dialog1.isFocusableWindow());
+		    // System.out.println(dialog1.isFocusableWindow());
 		    dialog1.toFront();
 		}
 		catch (Exception e) {
