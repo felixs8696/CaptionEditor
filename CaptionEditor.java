@@ -321,8 +321,6 @@ public class CaptionEditor extends Applet{
 			}
 			while (true) {
 			Object[] options = {"Shift Index","Shift Time","Shift Time By Index", "Index Generator", "Show File", "Quit"};
-			// int command = JOptionPane.showOptionDialog(null,"Enter an edit command: " + "\n" + helpStr, "The Caption Editor",
-			//     JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE, icon, options, options[5]);
 			 JOptionPane editCommands = new JOptionPane("Enter an edit command: " + "\n" + helpStr,
 			    JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION, icon, options, options[5]);
 			JDialog editOptions = editCommands.createDialog(null, "The Caption Editor");
