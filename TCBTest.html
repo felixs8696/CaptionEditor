@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<link rel="stylesheet" href="bootstrap.css">
+</head>
+<script type="text/javascript" src = "TheCaptionButton.js"></script>
+<body onload="show();">
+	<div class= "container">
+		<div class= "row">
+			<h1>The Caption Button</h1>
+			<textarea id="textbox" rows = "20" cols = "50">Blank Subtitle File...</textarea>
+			<button id="create" onclick="createFile()">Create File</button>
+			<a download="TheCaptionButton.txt" id="downloadlink" style="display: none">Download as .txt file</a>
+			<p id = "filename">File Chosen: </p>
+			<div>Time: <span id="time"></span></div>
+			<input type="button" value="start" onclick="start();">
+			<input type="button" value="stop" onclick="stop();">
+			<input type="button" value="reset" onclick="reset()">
+			<br><br>
+			<input type="button" value="In" onclick="writeIn()">
+			<input type="button" value="Out" onclick="writeOut()">
+			<input type="button" value="Return" onclick="returnFrame()">
+			<p>[Start] - Records the start time of your next subtitle
+				| [End] - Records the end time of your next subtitle
+				| [Return] - Returns the timer to the most recent frame input</p>
+		</div>
+	</div>
+</body>
+</html>
