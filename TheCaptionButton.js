@@ -65,9 +65,56 @@ var recentFrame;
 var inPressed = false;
 var outPressed = true;
 var index = 1;
+var pause = true;
+var editing = false;
+var myVideo = document.getElementById("example_video_1"); 
+
+// document.addEventListener("keydown", stopFunc);
+document.addEventListener("keypress", stopFunc);
+
+function playPause() { 
+    if (myVideo.paused) {
+    	myVideo.play(); 
+    	start();
+    } else {
+    	stop();
+    	myVideo.pause(); 
+    }
+} 
+
+function inputSelected() {
+	editing = true;
+}
+
+function inputDeSelected() {
+	editing = false;
+}
+
+function stopFunc(e) {
+	var text = document.getElementById("textbox");
+	if (!editing) {
+		if (e.keyCode == 32) {
+			// playPause();
+			if (pause) {
+				start();
+				pause = false;
+			}
+			else {
+				stop();
+				pause = true;
+			}
+		}
+		if (e.keyCode == 109) {
+			write();
+		}
+		if (e.keyCode == 114) {
+			reset();
+		}
+	}
+}
 
 function pad(num, size) {
-	var s = "0000" + num;
+	var s = "0000" + num; 
 	return s.substr(s.length - size);
 }
 
@@ -88,15 +135,15 @@ function formatTime(time) {
 
 function show() {
 	$time = document.getElementById('time');
-	update();
+	update(x.time());
 }
 
-function update() {
-	$time.innerHTML = formatTime(x.time());
+function update(time) {
+	$time.innerHTML = formatTime(time);
 }
 
 function start() {
-	clocktimer = setInterval("update()", 1);
+	clocktimer = setInterval("update(x.time())", 1);
 	x.start();
 }
 
@@ -108,36 +155,51 @@ function stop() {
 function reset() {
 	stop();
 	x.reset();
-	update();
+	update(x.time());
 }
 
-function writeIn() {
-	if (outPressed) {
+function write() {
+	if (!inPressed) {
 		if (blank) {
 			document.getElementById('textbox').innerHTML = index + "\n" + formatTime(x.time()) + " --> ";
 			blank = false;
 		}
 		else {
-			document.getElementById('textbox').innerHTML += index + "\n" + formatTime(x.time()) + " --> ";
+			document.getElementById('textbox').innerHTML += "\n" + index + "\n" + formatTime(x.time()) + " --> ";
 		}
-		recentFrame = x.time();
+		recentFrame = x.start();
 		inPressed = true;
-		outPressed = false;
+		// outPressed = false;
 		index += 1;
 	}
-}
-
-function writeOut() {
-	if (inPressed) {
-		document.getElementById('textbox').innerHTML += formatTime(x.time()) + "\n" + "\n";
-		recentFrame = x.time();
+	else {
+		document.getElementById('textbox').innerHTML += formatTime(x.time()) + "\n";
+		recentFrame = x.start();
 		inPressed = false;
-		outPressed = true;
+		write();
+		// outPressed = true;
 	}
 }
 
+// function writeOut() {
+// 	if (inPressed) {
+// 		document.getElementById('textbox').innerHTML += formatTime(x.time()) + "\n" + "\n";
+// 		recentFrame = x.time();
+// 		inPressed = false;
+// 		outPressed = true;
+// 	}
+// }
+
 function returnFrame() {
-	$time.value = recentFrame;
-	$time.innerHTML = formatTime(recentFrame());
+	// $time.value = x.startAt;
+	update(recentFrame());
+	// $time.innerHTML = formatTime(recentFrame());
 }
+
+// function cTime() {
+//     document.getElementById("example_video_1").addEventListener('timeupdate', function() {
+//     document.getElementById("currentTime").innerHTML = this.currentTime;
+//     currentTime = this.currentTime;
+// });
+// }
 

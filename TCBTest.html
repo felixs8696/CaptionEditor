@@ -2,27 +2,67 @@
 <html>
 <head>
 	<link rel="stylesheet" href="bootstrap.css">
+	<link rel="stylesheet" href="index.css">
+
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="style.css">
+
+	<link href="video-js/video-js.css" rel="stylesheet" type="text/css">
+	<!-- video.js must be in the <head> for older IEs to work. -->
+	<script src="video-js/video.js"></script>
+
+	<!-- Unless using the CDN hosted version, update the URL to the Flash SWF -->
+<!--	<script>
+	    videojs.options.flash.swf = "video-js/video-js.swf";
+	</script> -->
 </head>
 <script type="text/javascript" src = "TheCaptionButton.js"></script>
 <body onload="show();">
 	<div class= "container">
 		<div class= "row">
-			<h1>The Caption Button</h1>
-			<textarea id="textbox" rows = "20" cols = "50">Blank Subtitle File...</textarea>
-			<button id="create" onclick="createFile()">Create File</button>
-			<a download="TheCaptionButton.txt" id="downloadlink" style="display: none">Download as .txt file</a>
-			<p id = "filename">File Chosen: </p>
-			<div>Time: <span id="time"></span></div>
-			<input type="button" value="start" onclick="start();">
-			<input type="button" value="stop" onclick="stop();">
-			<input type="button" value="reset" onclick="reset()">
-			<br><br>
-			<input type="button" value="In" onclick="writeIn()">
-			<input type="button" value="Out" onclick="writeOut()">
-			<input type="button" value="Return" onclick="returnFrame()">
-			<p>[Start] - Records the start time of your next subtitle
-				| [End] - Records the end time of your next subtitle
-				| [Return] - Returns the timer to the most recent frame input</p>
+			<div class= "col-lg-6">
+				<textarea id="textbox" rows = "30" cols = "75" onclick="inputSelected()" onfocusout="inputDeSelected()" style= "margin: 20px">Blank Subtitle File...</textarea>
+				<br>
+				<button id="create" onclick="createFile()" >Create File</button>
+				<a download="TheCaptionButton.txt" id="downloadlink" style="display: none">Download as .txt file</a>
+			</div>
+			<div class = "col-lg-6">
+<!--				<video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264" poster="http://video-js.zencoder.com/oceans-clip.png" data-setup="{}">
+				    <source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
+				    <source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
+				    <source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
+				    <track kind="captions" src="demo.captions.vtt" srclang="en" label="English"></track> -->
+				    <!-- Tracks need an ending tag thanks to IE9 -->
+				    <!-- <track kind="subtitles" src="demo.captions.vtt" srclang="en" label="English"></track> -->
+				    <!-- Tracks need an ending tag thanks to IE9 -->
+				    <!-- <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+				</video>
+
+				<script src="videojs-hotkeys-master/videojs.hotkeys.js"></script> -->
+<!--				<script>
+			      // initialize the plugin
+			      videojs('example_video_1').ready(function() {
+			        this.hotkeys({
+			          volumeStep: 0.1,
+			          seekStep: 5,
+			          enableMute: true,
+			          enableFullscreen: true
+			        });
+			      });
+			    </script> -->
+				<div style="text-align:center;">
+					<div><h1>Time: <span id="time" ></span> </h1></div>
+					<input type="button" value="start" onclick="start();">
+					<input type="button" value="stop" onclick="stop();">
+					<input type="button" value="reset" onclick="reset()">
+					<input type="button" value="Return" onclick="returnFrame()">
+					<p>[Return] - Returns the timer to the most recent frame input</p>
+				</div>
+<!-- 				<div style="text-align:center;">
+					<div><h1>Time: <span id="currentTime"></span> </h1></div>
+					<input type="button" value="hi" onclick="cTime();">
+				</div> -->
+			</div>
 		</div>
 	</div>
 </body>
